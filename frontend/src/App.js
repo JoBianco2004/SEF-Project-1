@@ -1,3 +1,4 @@
+// main React component file
 import './App.css';
 
 function App() {
