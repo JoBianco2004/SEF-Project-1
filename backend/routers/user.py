@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from ..services import calculator
-from ..database import models
+from ..services import calculator, rag_functions
 
 
 router = APIRouter()
@@ -10,5 +9,18 @@ router = APIRouter()
 def calculation(num1: str, num2: str, selection: str):
     return {"result": calculator.calculate(num1, num2, selection)}
 
+@router.get("/common_questions")
+def get_common_questions():
+    return rag_functions.common_questions()
 
-# here for router 
+@router.get("/generate_quiz")
+def get_quiz():
+    return rag_functions.generate_quiz()
+
+@router.get("/answer")
+def get_answer(question: str):
+    return rag_functions.answer(question)
+
+@router.post("/grade")
+def post_grade(submission: str):
+    return rag_functions.grade(submission)
