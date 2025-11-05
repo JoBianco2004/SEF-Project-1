@@ -1,11 +1,25 @@
 // main React component file
 import './App.css';
+import React, { useState } from "react";
+import LoginSignup from './pages/LoginSignup/LoginSignup';
+import ClassroomCopilot from './pages/ClassroomCopilot/ClassroomCopilot';
+
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  function handleLoginSuccess() {
+    setIsLoggedIn(true);
+  }
+
   return (
-    <div className="App">
-      <h1>Project 1</h1>
-    </div>
+    <>
+      {isLoggedIn ? (
+        <ClassroomCopilot />
+      ) : (
+        <LoginSignup onLoginSuccess={handleLoginSuccess} />
+      )}
+    </>
   );
 }
 
