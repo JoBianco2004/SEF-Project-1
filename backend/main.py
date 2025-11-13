@@ -1,6 +1,6 @@
 # main python backend file
 from fastapi import FastAPI
-from .routers import user
+from .routers import tools, user, rag
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -14,8 +14,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# router
+# routers
 app.include_router(user.router)
+app.include_router(rag.router)
+app.include_router(tools.router)
 
 # front page
 @app.get("/")
