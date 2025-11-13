@@ -6,6 +6,7 @@ from pydantic import EmailStr
 #database class for user
 class User(SQLModel, table = True):
     id: int = Field(default=None, primary_key=True, sa_column_kwargs={"autoincrement": True})
+    role: str = Field(default="student", index=True)
     first_name: str
     last_name: str
     email: EmailStr = Field(unique=True, index=True)

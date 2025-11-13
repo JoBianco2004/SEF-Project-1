@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from ..services import calculator
 
-router = APIRouter()
+router = APIRouter(prefix="/tools", tags=["tools"])
 
 
 #this is just a test (we could keep it lol)
