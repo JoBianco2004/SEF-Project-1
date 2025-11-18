@@ -1,0 +1,12 @@
+Place LLM here (inside of /llm_models directory) and call it by name inside of /services/llm.py on model path
+
+example:
+model_path = str(Path(__file__).parent.parent / "llm_models" / "name of LLM HERE!!!!")
+
+example with tinyLlama (must rename tinyLlama LLM model to "tinyLlama)
+model_path = str(Path(__file__).parent.parent / "llm_models" / "tinyLlama.gguf")
+
+
+LINK TO DOWNLOAD tinyLlama LLM:
+
+https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/blob/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
