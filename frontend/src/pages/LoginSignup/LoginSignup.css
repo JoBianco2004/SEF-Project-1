@@ -6,13 +6,13 @@ body{
     background-color: aliceblue;
 }
 .container {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  width: 400px;
-  border-radius: 15px;
-  border: 4px solid rgb(132, 153, 176);
-  padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 400px;
+    border-radius: 15px;
+    border: 4px solid rgb(132, 153, 176);
+    padding: 30px;
 }
 
 .header{ 
@@ -40,7 +40,7 @@ body{
     margin: 5px;
     padding: 10px;
     width: 250px;
-   }
+}
 
 .input input{
     font-size: 15px;
@@ -49,38 +49,34 @@ body{
     background-color: aliceblue;
     border: solid 2px gray;
     outline: none;
-    }
+}
 
-    .forgot-password{
-        font-size: 15px;
-        padding: 20px;
-        color: rgb(0, 0, 0);
-        cursor: pointer;        
-        margin: auto;
-        text-align: center;
-    }
+.forgot-password{
+    font-size: 15px;
+    padding: 20px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;        
+    margin: auto;
+    text-align: center;
+}
 
-    .forgot-password span{
+.forgot-password span{
+    text-decoration: underline;
+}
 
-        text-decoration: underline;
-    }
+.submit-container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+}
 
-    .submit-container{
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding-top: 20px;
-    }
-
-    .submit{
-        background-color: rgb(69, 62, 165);
-        color: white;
-        font-size: 20px;
-        padding: 10px 50px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-        
-      
-    }
+.submit{
+    background-color: rgb(69, 62, 165);
+    color: white;
+    font-size: 20px;
+    padding: 10px 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
