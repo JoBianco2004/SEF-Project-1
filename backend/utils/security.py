@@ -1,3 +1,12 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: security.py
+# Description: Used to hash and unhash user password 
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 import bcrypt
 
 #get password and encode it 

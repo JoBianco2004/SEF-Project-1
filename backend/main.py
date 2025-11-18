@@ -1,4 +1,15 @@
-# main python backend file
+# Author: Joey Lo Blanco
+# Date: 11/18/25 -Documented, not created
+# File_Name: main.py
+# Description: main python backend file
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+# Added CORS - Joey Lo Blanco
+# Added routers -Daniel Valdes
+#-------------------------------------------------------------------------------------------------
+
+
 from fastapi import FastAPI
 from .routers import tools, user, rag
 from .routers.chat import router as chat_router

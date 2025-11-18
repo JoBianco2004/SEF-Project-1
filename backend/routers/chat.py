@@ -1,4 +1,12 @@
-# backend/routers/chat.py
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: chat.py
+# Description: CRUD for AI chat function
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from fastapi import APIRouter, Depends, HTTPException, Header
 from typing import List, Dict
 from ..models.chat import ChatMessage, ChatResponse

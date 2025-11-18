@@ -1,3 +1,12 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: tools.py
+# Description: calculator endpoint
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from fastapi import APIRouter
 from ..services import calculator
 

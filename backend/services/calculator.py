@@ -1,6 +1,11 @@
-#1 1/04/25
-# Daniel Valdes
-# This file contains a simple calculator code
+# Author: Daniel Valdes
+# Date: 10/04/25 
+# File_Name: calculator.py
+# Description: Simple calculator operations to test endpoint (might not be added in end product)
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
 
 # calculator logic
 def calculate(num1: str, num2: str, selection: str) -> int:

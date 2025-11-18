@@ -1,3 +1,12 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: llm.py
+# Description: LLM management file, used to implement or alter LLM behavior and model
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from llama_cpp import Llama
 from typing import List, Dict, Any, cast
 from pathlib import Path

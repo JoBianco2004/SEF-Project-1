@@ -1,3 +1,12 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: user.py
+# Description: Classes used to validate data collected from user
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime, date
 from typing import Optional
