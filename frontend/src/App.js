@@ -1,3 +1,5 @@
+// main React component file
+import './App.css';
 import React, { useState } from "react";
 import LoginSignup from './pages/LoginSignup/LoginSignup';
 import ClassroomCopilot from './pages/ClassroomCopilot/ClassroomCopilot';

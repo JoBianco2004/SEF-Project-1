@@ -1,3 +1,4 @@
+// entrypoint for React application, where App component is rendered 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

@@ -1,8 +1,11 @@
+# main python backend file
 from fastapi import FastAPI
-from rag_functions import answer, grade, common_questions, generate_quiz
+from .routers import tools, user, rag
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -11,22 +14,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# routers
+app.include_router(user.router)
+app.include_router(rag.router)
+app.include_router(tools.router)
+
+# front page
 @app.get("/")
 def read_root():
     return {"message": "Backend is alive!"}
-
-@app.get("/common_questions")
-def get_common_questions():
-    return common_questions()
-
-@app.get("/generate_quiz")
-def get_quiz():
-    return generate_quiz()
-
-@app.get("/answer")
-def get_answer(question: str):
-    return answer(question)
-
-@app.post("/grade")
-def post_grade(submission: str):
-    return grade(submission)
