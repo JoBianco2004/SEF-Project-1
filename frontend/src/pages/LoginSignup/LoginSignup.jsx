@@ -1,81 +1,102 @@
-import React from 'react'
-import './LoginSignup.css'
+import React from "react";
+import "./LoginSignup.css";
 
 const LoginSignup = ({ onLoginSuccess }) => {
-  const [action, setAction] = React.useState("Sign Up");
+  const [action, setAction] = React.useState("Login");
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-
   function handleLogin() {
     if (email && password) {
-      onLoginSuccess();
+      onLoginSuccess && onLoginSuccess();
     } else {
       alert("Please enter email and password");
     }
   }
 
   return (
-    <div className="container">
-      <div className="header">
-        <div className="text">{action}</div>
-      </div>
+    <div className="auth-page">
+      {/* Frosted glass card */}
+      <div className="auth-card">
 
-      <div className="inputs">
+        {/* Top bar like the SCF header */}
+        <div className="auth-card__bar">
+          <span className="auth-card__bar-title">LOGIN</span>
+        </div>
 
-        {action === "Sign Up" && (
-          <div className="input">
-            <input type="text" placeholder="Name" />
+        {/* Content split: left = form, right = logo */}
+        <div className="auth-card__content">
+          {/* Left side – form */}
+          <div className="auth-left">
+            <h2 className="auth-title">Sign in to continue</h2>
+
+            <div className="inputs">
+              {action === "Sign Up" && (
+                <div className="input">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+              )}
+
+              <div className="input">
+                <label>Email</label>
+                <input
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="input">
+                <label>Password</label>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="actions">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setAction("Login");
+                  handleLogin();
+                }}
+              >
+                Login
+              </button>
+
+              <button
+                className="btn btn-outline"
+                onClick={() => setAction("Sign Up")}
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
-        )}
 
-        <div className="input">
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="input">
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-
-      </div>
-
-      <div className="submit-container">
-        <div 
-          className="submit" 
-          onClick={() => setAction("Sign Up")}
-          style={{ cursor: 'pointer' }}
-        >
-          Sign Up
-        </div>
-        <div 
-          className="submit" 
-          onClick={() => {
-            setAction("Login");
-            handleLogin(); 
-          }}
-          style={{ cursor: 'pointer' }}
-        >
-          Login
+          {/* Right side – logo / brand */}
+          <div className="auth-right">
+            <img
+              className="brand-logo"
+              alt="Logo"
+              src="https://images.seeklogo.com/logo-png/42/2/fgcu-florida-gulf-coast-university-logo-png_seeklogo-425958.png"
+            />
+          </div>
         </div>
       </div>
-
-      {action === "Login" && (
-        <div className="forgot-password">
-          Forgot Password?
-        </div>
-      )}
     </div>
-  )
-}
+  );
+};
 
-export default LoginSignup
+export default LoginSignup;
