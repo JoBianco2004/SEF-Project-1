@@ -1,4 +1,3 @@
-// main React component file
 import './App.css';
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -12,9 +11,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userType, setUserType] = useState(null);
 
-  function handleLoginSuccess(type) {
+  // Updated to accept userData object with a role property
+  function handleLoginSuccess(userData) {
     setIsLoggedIn(true);
-    setUserType(type);
+    setUserType(userData.role); // e.g. "student" or "instructor"
   }
 
   if (!isLoggedIn) {

@@ -37,7 +37,12 @@ def login(user_in: UserLogin, session: Session = Depends(get_session)):
     user = session.exec(select(User).where(User.email == user_in.email)).first()
     if not user or not verify_password(user_in.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid email or Password")
-    return {"msg": "Login Successful", "user_id": user.id}
+    return {
+        "msg": "Login Successful",
+        "user_id": user.id,
+        "role": user.role  
+    }
+
 
 
 #read all users
