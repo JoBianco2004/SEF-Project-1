@@ -1,3 +1,5 @@
+// main React component file
+import './App.css';
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
