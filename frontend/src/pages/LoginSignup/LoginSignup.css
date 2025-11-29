@@ -1,11 +1,14 @@
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: aliceblue;
+/* Page Layout */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: aliceblue;
 }
-.container {
+
+/* Card Container */
+.login-container {
   display: flex;
   flex-direction: column;
   background: white;
@@ -15,72 +18,87 @@ body{
   padding: 30px;
 }
 
-.header{ 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 10px;
+/* Header Section */
+.header { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 }
 
-.text{
-    font-size: 30px;
-    color:black;
-    font-weight: bold;
-    margin-bottom: 10px;
+.text {
+  font-size: 30px;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-
-.inputs{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+/* Inputs */
+.inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.input{
-    margin: 5px;
-    padding: 10px;
-    width: 250px;
-   }
 
-.input input{
-    font-size: 15px;
-    padding: 10px;
-    width: 225px;
-    background-color: aliceblue;
-    border: solid 2px gray;
-    outline: none;
-    }
+.input {
+  margin: 5px 0;
+  width: 250px;
+}
 
-    .forgot-password{
-        font-size: 15px;
-        padding: 20px;
-        color: rgb(0, 0, 0);
-        cursor: pointer;        
-        margin: auto;
-        text-align: center;
-    }
+.input input {
+  font-size: 15px;
+  padding: 10px;
+  width: 225px;
+  background-color: aliceblue;
+  border: 2px solid gray;
+  border-radius: 5px;
+  outline: none;
+}
 
-    .forgot-password span{
+/* Forgot Password */
+.forgot-password {
+  font-size: 15px;
+  color: black;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
 
-        text-decoration: underline;
-    }
+.forgot-password span {
+  text-decoration: underline;
+}
 
-    .submit-container{
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding-top: 20px;
-    }
+/* Switch Buttons */
+.submit-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 20px;
+}
 
-    .submit{
-        background-color: rgb(69, 62, 165);
-        color: white;
-        font-size: 20px;
-        padding: 10px 50px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+.submit {
+  background-color: rgb(69, 62, 165);
+  color: white;
+  font-size: 18px;
+  padding: 10px 35px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.2s;
+}
 
-        
-      
-    }
+.submit.active {
+  opacity: 1;
+}
+
+/* Main Submit Button */
+.main-submit-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #453ea5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

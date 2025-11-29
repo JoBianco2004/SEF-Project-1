@@ -1,0 +1,82 @@
+/* Minimal scaffold for StudentDashboard
+   Designer can remove or extend. These styles intentionally keep things readable
+   but non-opinionated so your frontend logic displays nicely before full styling. */
+
+/* Page container */
+.dashboard-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Navigation */
+.dashboard-nav {
+  margin-bottom: 20px;
+}
+
+.nav-link {
+  margin-right: 12px;
+  text-decoration: none;
+}
+
+/* Heading */
+.dashboard-heading {
+  margin: 0 0 16px 0;
+  font-size: 1.5rem;
+}
+
+/* Profile view & edit form */
+.profile-view,
+.edit-form {
+  margin-bottom: 20px;
+}
+
+/* Form fields */
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.label-text {
+  display: inline-block;
+  width: 70px; /* lightweight alignment helper */
+}
+
+.field-input {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Actions */
+.actions {
+  margin-top: 12px;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #453ea5; /* neutral, can be overriden by designer */
+  color: #fff;
+}
+
+/* Danger / delete */
+.danger-zone {
+  margin-top: 16px;
+}
+
+.delete-btn {
+  background-color: transparent; /* keep minimal — designer can style */
+  color: #b00020;
+  border: 1px solid #b00020;
+}
+
+/* Divider */
+.divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
