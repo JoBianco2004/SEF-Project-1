@@ -2,7 +2,7 @@
 :root {
     --brand: rgb(0, 45, 114);
     /* your purple/indigo */
-    --brand-700: rgb(52, 47, 140);
+    --brand-700: rgb(0, 45, 114);
     --ink: #0e1320;
     --muted: #6b7280;
     --panel: rgba(255, 255, 255, 0.72);
