@@ -1,112 +1,141 @@
 import React, { useState } from "react";
-import "./LoginSignup.css";
+import axios from "axios";
 
-function LoginSignup({ onLoginSuccess }) {
-  const [action, setAction] = useState("Login");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginSignup({ onLoginSuccess }) {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [signupData, setSignupData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    role: "student",
+    dob: "",
+  });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  function handleSubmit() {
-    if (email && password) {
-      if (action === "Login") {
-        onLoginSuccess && onLoginSuccess();
-      } else {
-        alert("Account created (frontend only for now)");
-      }
+  // Handle form field changes
+  const handleChange = (e, isLoginForm = true) => {
+    const { name, value } = e.target;
+    if (isLoginForm) {
+      setLoginData((prev) => ({ ...prev, [name]: value }));
     } else {
-      alert("Please enter email and password");
+      setSignupData((prev) => ({ ...prev, [name]: value }));
     }
-  }
+  };
+
+  // Handle login submit
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      const response = await axios.post("http://localhost:8000/user/user/login", loginData);
+      onLoginSuccess(response.data.user_id); // or pass role too if backend sends it
+    } catch (err) {
+      setError(err.response?.data?.detail || "Login failed");
+    }
+  };
+
+  // Handle signup submit
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    try {
+      await axios.post("http://localhost:8000/user/user/create", signupData);
+      setSuccess("Account created! Please log in.");
+      setIsLogin(true);
+    } catch (err) {
+      setError(err.response?.data?.detail || "Signup failed");
+    }
+  };
 
   return (
-    <div className="auth-page">
-      {/* Frosted glass card */}
-      <div className="auth-card">
-
-        {/* Header bar */}
-        <div className="auth-card__bar">
-          <span className="auth-card__bar-title">
-            {action === "Login" ? "LOGIN" : "SIGN UP"}
-          </span>
-        </div>
-
-        {/* Content split */}
-        <div className="auth-card__content">
-
-          {/* Left Side – Form */}
-          <div className="auth-left">
-            <h2 className="auth-title">
-              {action === "Login" ? "Sign in to continue" : "Create an account"}
-            </h2>
-
-            <div className="inputs">
-              {action === "Sign Up" && (
-                <div className="input">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-              )}
-
-              <div className="input">
-                <label>Email</label>
-                <input
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="input">
-                <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="actions">
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  setAction("Login");
-                  handleSubmit();
-                }}
-              >
-                Login
-              </button>
-
-              <button
-                className="btn btn-outline"
-                onClick={() => setAction("Sign Up")}
-              >
-                Sign Up
-              </button>
-            </div>
-          </div>
-
-          {/* Right side – Logo */}
-          <div className="auth-right">
-            <img
-              className="brand-logo"
-              alt="Logo"
-              src="https://images.seeklogo.com/logo-png/42/2/fgcu-florida-gulf-coast-university-logo-png_seeklogo-425958.png"
-            />
-          </div>
-        </div>
+    <div>
+      <div>
+        <button onClick={() => { setIsLogin(true); setError(""); setSuccess(""); }}>
+          Login
+        </button>
+        <button onClick={() => { setIsLogin(false); setError(""); setSuccess(""); }}>
+          Sign Up
+        </button>
       </div>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+
+      {isLogin ? (
+        <form onSubmit={handleLoginSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={loginData.email}
+            onChange={(e) => handleChange(e, true)}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={loginData.password}
+            onChange={(e) => handleChange(e, true)}
+            required
+          />
+          <button type="submit">Log In</button>
+        </form>
+      ) : (
+        <form onSubmit={handleSignupSubmit}>
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First Name"
+            value={signupData.first_name}
+            onChange={(e) => handleChange(e, false)}
+            required
+          />
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last Name"
+            value={signupData.last_name}
+            onChange={(e) => handleChange(e, false)}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={signupData.email}
+            onChange={(e) => handleChange(e, false)}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={signupData.password}
+            onChange={(e) => handleChange(e, false)}
+            required
+          />
+          <select
+            name="role"
+            value={signupData.role}
+            onChange={(e) => handleChange(e, false)}
+          >
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+          </select>
+          <input
+            type="date"
+            name="dob"
+            value={signupData.dob}
+            onChange={(e) => handleChange(e, false)}
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+      )}
     </div>
   );
 }
-
-export default LoginSignup;
-
