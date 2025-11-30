@@ -1,3 +1,12 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: user.py
+# Description: CRUD for user log-in, create account, delete account, update account
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from sqlalchemy.exc import IntegrityError

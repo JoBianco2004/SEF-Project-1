@@ -1,6 +1,19 @@
-# main python backend file
+# Author: Joey Lo Blanco
+# Date: 11/18/25 -Documented, not created
+# File_Name: main.py
+# Description: main python backend file
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+# Added CORS - Joey Lo Blanco
+# Added routers -Daniel Valdes
+#-------------------------------------------------------------------------------------------------
+
+
 from fastapi import FastAPI
 from .routers import tools, user, rag
+from .routers.chat import router as chat_router
+from .routers.chat import router as user_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -18,6 +31,8 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(rag.router)
 app.include_router(tools.router)
+app.include_router(user_router)
+app.include_router(chat_router, prefix="/chat", tags=["chat"])
 
 # front page
 @app.get("/")

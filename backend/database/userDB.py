@@ -1,3 +1,13 @@
+# Author: Daniel Valdes
+# Date: 11/18/25 -Documented, not created
+# File_Name: userDB.py
+# Description: This file serves as the creation of a user data base to store user's log-
+# in credentials.
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from sqlmodel import SQLModel, Field, Session, create_engine
 from typing import Optional
 from datetime import datetime, date

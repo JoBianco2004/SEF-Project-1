@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LoginSignup.css";
 
-const LoginSignup = ({ onLoginSuccess }) => {
-  const [action, setAction] = React.useState("Login");
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+function LoginSignup({ onLoginSuccess }) {
+  const [action, setAction] = useState("Login");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleLogin() {
+  function handleSubmit() {
     if (email && password) {
-      onLoginSuccess && onLoginSuccess();
+      if (action === "Login") {
+        onLoginSuccess && onLoginSuccess();
+      } else {
+        alert("Account created (frontend only for now)");
+      }
     } else {
       alert("Please enter email and password");
     }
@@ -20,16 +24,21 @@ const LoginSignup = ({ onLoginSuccess }) => {
       {/* Frosted glass card */}
       <div className="auth-card">
 
-        {/* Top bar like the SCF header */}
+        {/* Header bar */}
         <div className="auth-card__bar">
-          <span className="auth-card__bar-title">LOGIN</span>
+          <span className="auth-card__bar-title">
+            {action === "Login" ? "LOGIN" : "SIGN UP"}
+          </span>
         </div>
 
-        {/* Content split: left = form, right = logo */}
+        {/* Content split */}
         <div className="auth-card__content">
-          {/* Left side – form */}
+
+          {/* Left Side – Form */}
           <div className="auth-left">
-            <h2 className="auth-title">Sign in to continue</h2>
+            <h2 className="auth-title">
+              {action === "Login" ? "Sign in to continue" : "Create an account"}
+            </h2>
 
             <div className="inputs">
               {action === "Sign Up" && (
@@ -70,7 +79,7 @@ const LoginSignup = ({ onLoginSuccess }) => {
                 className="btn btn-primary"
                 onClick={() => {
                   setAction("Login");
-                  handleLogin();
+                  handleSubmit();
                 }}
               >
                 Login
@@ -85,7 +94,7 @@ const LoginSignup = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          {/* Right side – logo / brand */}
+          {/* Right side – Logo */}
           <div className="auth-right">
             <img
               className="brand-logo"
@@ -97,6 +106,7 @@ const LoginSignup = ({ onLoginSuccess }) => {
       </div>
     </div>
   );
-};
+}
 
 export default LoginSignup;
+

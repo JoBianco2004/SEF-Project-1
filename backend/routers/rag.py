@@ -1,3 +1,12 @@
+# Author: Joey Lo Blanco 
+# Date: 11/18/25 -Documented, not created
+# File_Name: rag.py
+# Description: Placeholder endpoint to test frontend
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 from fastapi import APIRouter
 from ..services import rag_functions
 

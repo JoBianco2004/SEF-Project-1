@@ -1,4 +1,12 @@
-# test holder functions
+# Author: Joey Lo Blanco
+# Date: 11/18/25 -Documented, not created
+# File_Name: rag_functions.py
+# Description: test holder functions
+
+#-------------------------------------------------------------------------------------------------
+# Modified: 
+#-------------------------------------------------------------------------------------------------
+
 def answer(question: str):
     return {"answer": f"This is a placeholder answer for: {question}"}
 
