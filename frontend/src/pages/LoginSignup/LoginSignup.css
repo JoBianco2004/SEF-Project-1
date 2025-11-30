@@ -2,7 +2,7 @@
 :root {
     --brand: rgb(0, 45, 114);
     /* your purple/indigo */
-    --brand-700: rgb(0, 45, 114);
+    --brand-700: rgb(0, 30, 80);
     --ink: #0e1320;
     --muted: #6b7280;
     --panel: rgba(255, 255, 255, 0.72);
@@ -121,7 +121,7 @@ body {
     margin-top: 18px;
 }
 
-.btn {
+.lbtn {
     appearance: none;
     border-radius: 12px;
     padding: 12px 18px;
@@ -132,32 +132,35 @@ body {
     transition: transform .05s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 
-.btn-primary {
+/* BLUE button */
+.lbtn-primary {
     background: var(--brand);
     color: #fff;
-    box-shadow: 0 8px 18px rgba(69, 62, 165, 0.28);
+    box-shadow: 0 8px 18px rgba(0, 45, 114, 0.28);
+    /* <-- updated blue shadow */
 }
 
-.btn-primary:hover {
+.lbtn-primary:hover {
     background: var(--brand-700);
 }
 
-.btn-primary:active {
+.lbtn-primary:active {
     transform: translateY(1px);
 }
 
-.btn-outline {
+/* OUTLINE */
+.lbtn-outline {
     background: #ffffff;
     color: var(--brand);
-    border-color: rgba(69, 62, 165, 0.25);
+    border-color: rgba(0, 45, 114, 0.35);
 }
 
-.btn-outline:hover {
+.lbtn-outline:hover {
     border-color: var(--brand);
-    box-shadow: 0 6px 16px rgba(69, 62, 165, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 45, 114, 0.25);
 }
 
-.btn-outline:active {
+.lbtn-outline:active {
     transform: translateY(1px);
 }
 

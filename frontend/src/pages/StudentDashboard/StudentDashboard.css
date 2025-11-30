@@ -1,7 +1,7 @@
 /* ===== Theme Variables (same as login) ===== */
 :root {
   --brand: rgb(0, 45, 114);
-  --brand-700: rgb(52, 47, 140);
+  --brand-700: rgb(0, 45, 114);
   --ink: #0e1320;
   --panel: rgba(255, 255, 255, 0.72);
   --border: rgba(255, 255, 255, 0.45);
@@ -101,9 +101,9 @@
 }
 
 /* ===== Buttons ===== */
-.btn {
+.sDash-btn {
   padding: 12px 18px;
-  border-radius: 120px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
