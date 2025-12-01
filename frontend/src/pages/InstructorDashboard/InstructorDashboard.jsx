@@ -1,93 +1,104 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./InstructorDashboard.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./InstructorDashboard.css"; // <-- ADD THIS
 
-function InstructorDashboard() {
-  // Mock student list
-  const [students, setStudents] = useState([
-    { id: 1, name: "Alice Johnson", flagged: false },
-    { id: 2, name: "Ben Carter", flagged: false },
-    { id: 3, name: "Chris Lee", flagged: false }
-  ]);
+export default function InstructorDashboard() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  // Search filter
-  const [search, setSearch] = useState("");
-
-  const filteredStudents = students.filter((student) =>
-    student.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  // Toggle flagged status
-  const toggleFlag = (id) => {
-    setStudents((prev) =>
-      prev.map((s) =>
-        s.id === id ? { ...s, flagged: !s.flagged } : s
-      )
-    );
+  const fetchUsers = () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    axios
+      .get("http://localhost:8000/user/read?skip=0&limit=1000")
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to fetch users.");
+        setLoading(false);
+      });
   };
 
-  // Remove student
-  const removeStudent = (id) => {
-    if (window.confirm("Remove this student?")) {
-      setStudents((prev) => prev.filter((s) => s.id !== id));
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/user/${userId}`);
+      setSuccess("User deleted successfully.");
+      fetchUsers();
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to delete user.");
     }
   };
 
+  if (loading) return <p className="loading">Loading users...</p>;
+
   return (
-    <div className="instructor-container">
-      {/* Navigation */}
-      <nav className="dashboard-nav">
-        <Link to="/student" className="nav-link">Student Dashboard</Link>
-        <Link to="/instructor" className="nav-link">Instructor Dashboard</Link>
-        <Link to="/chat" className="nav-link">Chat</Link>
-      </nav>
+    <div className="instructor-page">
+      <div className="instructor-card">
+        
+        {/* Header Bar */}
+        <div className="instructor-bar">
+          <span className="instructor-title">Instructor Dashboard</span>
+          <button className="back-btn" onClick={() => navigate("/chat")}>
+            Back to Copilot
+          </button>
+        </div>
 
-      <h2 className="dashboard-heading">Instructor Dashboard</h2>
+        <div className="instructor-content">
+          {error && <p className="error-text">{error}</p>}
+          {success && <p className="success-text">{success}</p>}
 
-      {/* Search */}
-      <div className="search-area">
-        <input
-          className="search-input"
-          type="text"
-          placeholder="Search students"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+          {users.length === 0 ? (
+            <p className="no-users">No users found.</p>
+          ) : (
+            <div className="table-wrapper">
+              <table className="user-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Role</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>{user.role}</td>
+                      <td>{user.first_name}</td>
+                      <td>{user.last_name}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <button className="delete-btn" onClick={() => handleDelete(user.id)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+        </div>
+
       </div>
-
-      {/* Student List */}
-      <ul className="student-list">
-        {filteredStudents.length === 0 ? (
-          <p className="no-results">No students found.</p>
-        ) : (
-          filteredStudents.map((student) => (
-            <li key={student.id} className="student-card">
-              <span className="student-name">
-                {student.name}
-                {student.flagged && <span className="flag-indicator"> (flagged)</span>}
-              </span>
-
-              <div className="student-actions">
-                <button
-                  className="btn"
-                  onClick={() => toggleFlag(student.id)}
-                >
-                  {student.flagged ? "Unflag" : "Flag"}
-                </button>
-
-                <button
-                  className="btn remove-btn"
-                  onClick={() => removeStudent(student.id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </li>
-          ))
-        )}
-      </ul>
     </div>
   );
 }
-
-export default InstructorDashboard;
