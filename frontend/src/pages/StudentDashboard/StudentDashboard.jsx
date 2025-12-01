@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./StudentDashboard.css"; // <-- ADD THIS
 
 export default function StudentDashboard({ userId, onLogout }) {
   const [userData, setUserData] = useState(null);
@@ -18,8 +19,7 @@ export default function StudentDashboard({ userId, onLogout }) {
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
-    setError("");
-    // Corrected URL here — removed extra /user/
+
     axios
       .get(`http://localhost:8000/user/${userId}`)
       .then((res) => {
@@ -60,7 +60,6 @@ export default function StudentDashboard({ userId, onLogout }) {
     if (!updatePayload.password) delete updatePayload.password;
 
     try {
-      // Corrected URL here — removed extra /user/
       await axios.put(`http://localhost:8000/user/${userId}`, updatePayload);
       setSuccess("Account updated successfully!");
       setForm((prev) => ({ ...prev, password: "" }));
@@ -80,7 +79,6 @@ export default function StudentDashboard({ userId, onLogout }) {
     if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) return;
 
     try {
-      // Corrected URL here — removed extra /user/
       await axios.delete(`http://localhost:8000/user/${userId}`);
       onLogout();
     } catch (err) {
@@ -88,79 +86,82 @@ export default function StudentDashboard({ userId, onLogout }) {
     }
   };
 
-  if (loading) return <p>Loading user data...</p>;
-  if (error && !userData) return <p style={{ color: "red" }}>{error}</p>;
+  if (loading) return <p className="loading">Loading your dashboard...</p>;
 
   return (
-    <div>
-      {/* Button: Go to Chat */}
-      <div style={{ marginBottom: 15 }}>
-        <button onClick={() => navigate("/chat")} style={{ marginRight: 10 }}>
-          Go to Chat
-        </button>
+    <div className="student-page">
+      <div className="student-card">
+
+        {/* Header Bar */}
+        <div className="student-bar">
+          <span className="student-title">Student Dashboard</span>
+          <div className="student-actions">
+            <button className="nav-btn" onClick={() => navigate("/chat")}>Back to Copilot</button>
+            <button className="logout-btn" onClick={onLogout}>Logout</button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="student-content">
+          {error && <p className="error-text">{error}</p>}
+          {success && <p className="success-text">{success}</p>}
+
+          <form className="student-form" onSubmit={handleUpdate}>
+
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                name="first_name"
+                value={form.first_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                name="last_name"
+                value={form.last_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password (leave blank to keep current)</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button className="save-btn" type="submit">Save Changes</button>
+          </form>
+
+          <hr className="divider" />
+
+          <button className="delete-btn" onClick={handleDelete}>
+            Delete Account
+          </button>
+
+        </div>
       </div>
-
-      <h2>Student Dashboard</h2>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-
-      <form onSubmit={handleUpdate}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            name="first_name"
-            value={form.first_name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-
-        <label>
-          Last Name:
-          <input
-            type="text"
-            name="last_name"
-            value={form.last_name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-
-        <label>
-          Password: (leave blank to keep current password)
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-
-        <button type="submit">Update Account</button>
-      </form>
-
-      <hr />
-
-      <button onClick={handleDelete} style={{ color: "red" }}>
-        Delete Account
-      </button>
     </div>
   );
 }
