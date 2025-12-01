@@ -1,40 +1,26 @@
-# Author: Joey Lo Blanco
-# Date: 11/18/25 -Documented, not created
-# File_Name: main.py
-# Description: main python backend file
-
-#-------------------------------------------------------------------------------------------------
-# Modified: 
-# Added CORS - Joey Lo Blanco
-# Added routers -Daniel Valdes
-#-------------------------------------------------------------------------------------------------
-
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .routers import tools, user, rag
 from .routers.chat import router as chat_router
-from .routers.chat import router as user_router
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# CORS
+# Allow all origins for development (change in production)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],  # You can restrict this to specific origins later
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# routers
-app.include_router(user.router)
+# Include routers
+app.include_router(user.router)          # User-related routes
 app.include_router(rag.router)
 app.include_router(tools.router)
-app.include_router(user_router)
-app.include_router(chat_router, prefix="/chat", tags=["chat"])
+app.include_router(chat_router, prefix="/chat", tags=["chat"])  # Chat-related routes
 
-# front page
+# Root endpoint
 @app.get("/")
 def read_root():
     return {"message": "Backend is alive!"}

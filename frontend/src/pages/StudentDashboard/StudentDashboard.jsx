@@ -1,114 +1,166 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./StudentDashboard.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function StudentDashboard() {
-  // This is the initial profile data stored in state
-  const [profile, setProfile] = useState({
-    name: "Jane Doe",
-    email: "jane@example.com",
-    major: "Computer Science",
+export default function StudentDashboard({ userId, onLogout }) {
+  const [userData, setUserData] = useState(null);
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  // Tracks whether we are in edit mode or just viewing
-  const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    if (!userId) return;
+    setLoading(true);
+    setError("");
+    // Corrected URL here — removed extra /user/
+    axios
+      .get(`http://localhost:8000/user/${userId}`)
+      .then((res) => {
+        setUserData(res.data);
+        setForm({
+          first_name: res.data.first_name || "",
+          last_name: res.data.last_name || "",
+          email: res.data.email || "",
+          password: "",
+        });
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load user data.");
+        setLoading(false);
+      });
+  }, [userId]);
 
-  // Updates the profile data when user types in inputs
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Toggles between edit mode and view mode
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
-  // Simulates deleting the profile by clearing it
-  const deleteProfile = () => {
-    if (window.confirm("Are you sure you want to delete your profile?")) {
-      setProfile(null);
+    if (!userData) {
+      setError("User data is not loaded yet.");
+      return;
+    }
+
+    const updatePayload = {
+      ...form,
+      role: userData.role,
+    };
+
+    if (!updatePayload.password) delete updatePayload.password;
+
+    try {
+      // Corrected URL here — removed extra /user/
+      await axios.put(`http://localhost:8000/user/${userId}`, updatePayload);
+      setSuccess("Account updated successfully!");
+      setForm((prev) => ({ ...prev, password: "" }));
+    } catch (err) {
+      const detail = err.response?.data?.detail;
+      if (typeof detail === "string") {
+        setError(detail);
+      } else if (Array.isArray(detail)) {
+        setError(detail.map((d) => d.msg).join(", "));
+      } else {
+        setError("Update failed");
+      }
     }
   };
 
-  // If profile is deleted, show this message
-  if (!profile) {
-    return <div className="dashboard-container">Your profile has been deleted.</div>;
-  }
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) return;
+
+    try {
+      // Corrected URL here — removed extra /user/
+      await axios.delete(`http://localhost:8000/user/${userId}`);
+      onLogout();
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to delete account");
+    }
+  };
+
+  if (loading) return <p>Loading user data...</p>;
+  if (error && !userData) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="dashboard-container">
-      {/* Navigation links to switch pages */}
-      <nav className="dashboard-nav">
-        <Link to="/student" className="nav-link">Student Dashboard</Link>
-        <Link to="/instructor" className="nav-link">Instructor Dashboard</Link>
-        <Link to="/chat" className="nav-link">Chat</Link>
-      </nav>
-
-      <h2 className="dashboard-heading">Student Dashboard</h2>
-
-      {isEditing ? (
-        <div className="edit-form">
-          <label className="field">
-            <span className="label-text">Name:</span>
-            <input
-              className="field-input"
-              type="text"
-              name="name"
-              value={profile.name}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label className="field">
-            <span className="label-text">Email:</span>
-            <input
-              className="field-input"
-              type="email"
-              name="email"
-              value={profile.email}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label className="field">
-            <span className="label-text">Major:</span>
-            <input
-              className="field-input"
-              type="text"
-              name="major"
-              value={profile.major}
-              onChange={handleChange}
-            />
-          </label>
-
-          <div className="actions">
-            <button className="btn" onClick={toggleEdit}>Save</button>
-          </div>
-        </div>
-      ) : (
-        <div className="profile-view">
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Major:</strong> {profile.major}</p>
-          <div className="actions">
-            <button className="btn" onClick={toggleEdit}>Edit Profile</button>
-          </div>
-        </div>
-      )}
-
-      <hr className="divider" />
-
-      <div className="danger-zone">
-        <button className="btn delete-btn" onClick={deleteProfile}>
-          Delete Profile
+    <div>
+      {/* Button: Go to Chat */}
+      <div style={{ marginBottom: 15 }}>
+        <button onClick={() => navigate("/chat")} style={{ marginRight: 10 }}>
+          Go to Chat
         </button>
       </div>
+
+      <h2>Student Dashboard</h2>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+
+      <form onSubmit={handleUpdate}>
+        <label>
+          First Name:
+          <input
+            type="text"
+            name="first_name"
+            value={form.first_name}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <br />
+
+        <label>
+          Last Name:
+          <input
+            type="text"
+            name="last_name"
+            value={form.last_name}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <br />
+
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <br />
+
+        <label>
+          Password: (leave blank to keep current password)
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+
+        <button type="submit">Update Account</button>
+      </form>
+
+      <hr />
+
+      <button onClick={handleDelete} style={{ color: "red" }}>
+        Delete Account
+      </button>
     </div>
   );
 }
-
-export default StudentDashboard;

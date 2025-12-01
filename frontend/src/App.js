@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import LoginSignup from './pages/LoginSignup/LoginSignup';
@@ -9,12 +9,41 @@ import InstructorDashboard from './pages/InstructorDashboard/InstructorDashboard
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userType, setUserType] = useState(null);
+  const [userData, setUserData] = useState(null); // expects { user_id, role }
 
-  // Updated to accept userData object with a role property
-  function handleLoginSuccess(userData) {
+  // Restore user data from localStorage on app load
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      try {
+        const parsedUserData = JSON.parse(storedUserData);
+        // Validate essential keys before setting
+        if (parsedUserData.user_id && parsedUserData.role) {
+          setUserData(parsedUserData);
+          setIsLoggedIn(true);
+        } else {
+          // Data invalid, clear localStorage
+          localStorage.removeItem("userData");
+        }
+      } catch (error) {
+        console.error("Failed to parse userData from localStorage", error);
+        localStorage.removeItem("userData");
+      }
+    }
+  }, []);
+
+  // When login succeeds, store user data and persist to localStorage
+  function handleLoginSuccess(user) {
+    setUserData(user);
     setIsLoggedIn(true);
-    setUserType(userData.role); // e.g. "student" or "instructor"
+    localStorage.setItem("userData", JSON.stringify(user));
+  }
+
+  // On logout, clear state and localStorage
+  function handleLogout() {
+    setUserData(null);
+    setIsLoggedIn(false);
+    localStorage.removeItem("userData");
   }
 
   if (!isLoggedIn) {
@@ -23,17 +52,41 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/"
+      {/* Default redirect */}
+      <Route path="/" element={<Navigate to="/chat" />} />
+
+      {/* Chat route */}
+      <Route
+        path="/chat"
+        element={<ClassroomCopilot userRole={userData.role} onLogout={handleLogout} />}
+      />
+
+      {/* Student dashboard only accessible by student */}
+      <Route
+        path="/student"
         element={
-          userType === "student" ? <Navigate to="/student" /> :
-          userType === "instructor" ? <Navigate to="/instructor" /> :
-          <Navigate to="/chat" />
+          userData.role === "student" ? (
+            <StudentDashboard userId={userData.user_id} onLogout={handleLogout} />
+          ) : (
+            <Navigate to="/chat" />
+          )
         }
       />
-      <Route path="/student" element={<StudentDashboard />} />
-      <Route path="/instructor" element={<InstructorDashboard />} />
-      <Route path="/chat" element={<ClassroomCopilot />} />
-      <Route path="*" element={<Navigate to="/" />} />
+
+      {/* Instructor dashboard only accessible by instructor */}
+      <Route
+        path="/instructor"
+        element={
+          userData.role === "instructor" ? (
+            <InstructorDashboard userId={userData.user_id} onLogout={handleLogout} />
+          ) : (
+            <Navigate to="/chat" />
+          )
+        }
+      />
+
+      {/* Catch-all redirect */}
+      <Route path="*" element={<Navigate to="/chat" />} />
     </Routes>
   );
 }

@@ -30,8 +30,9 @@ export default function LoginSignup({ onLoginSuccess }) {
     e.preventDefault();
     setError("");
     try {
-      const response = await axios.post("http://localhost:8000/user/user/login", loginData);
-      onLoginSuccess(response.data.user_id); // or pass role too if backend sends it
+      const response = await axios.post("http://localhost:8000/user/login", loginData);
+      // Pass entire response data (includes user_id and role)
+      onLoginSuccess(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || "Login failed");
     }
@@ -43,7 +44,7 @@ export default function LoginSignup({ onLoginSuccess }) {
     setError("");
     setSuccess("");
     try {
-      await axios.post("http://localhost:8000/user/user/create", signupData);
+      await axios.post("http://localhost:8000/user/create", signupData);
       setSuccess("Account created! Please log in.");
       setIsLogin(true);
     } catch (err) {
